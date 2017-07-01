@@ -13,7 +13,6 @@ import java.sql.SQLException;
  * Created by User on 01.07.2017.
  */
 public class MySqlPersonDao {
-    ConnectionDB connectionDB = new ConnectionDB();
 
     private static final String FIND_BY_ID = "SELECT * FROM person_info WHERE person_id = ?";
     private static final String FIND_BY_TELEGRAM_ID = "SELECT * FROM person_info WHERE telegram_id = ?";
@@ -21,6 +20,7 @@ public class MySqlPersonDao {
     private static final String UPDATE = "UPDATE person_info SET telegram_id = ? ,first_name = ?,last_name = ?,check_date = ?, status = ? WHERE person_id = ?";
 
     public BaseEntity insert(Person item) {
+        ConnectionDB connectionDB = new ConnectionDB();
         try {
             try (PreparedStatement statement = connectionDB.getConnection().prepareStatement(INSERT, PreparedStatement.RETURN_GENERATED_KEYS)) {
                 statement(statement, item).executeUpdate();
@@ -30,6 +30,7 @@ public class MySqlPersonDao {
                 }
             }
         } catch (SQLException e) {
+            e.printStackTrace();
 
         } finally {
             try {
@@ -37,13 +38,13 @@ public class MySqlPersonDao {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-
         }
         return item;
     }
 
     public BaseEntity findById(int id) {
         Person person = null;
+        ConnectionDB connectionDB = new ConnectionDB();
         try {
             try (PreparedStatement statement = connectionDB.getConnection().prepareStatement(FIND_BY_ID)) {
                 statement.setInt(1, id);
@@ -54,7 +55,7 @@ public class MySqlPersonDao {
                 }
             }
         } catch (SQLException e) {
-
+            e.printStackTrace();
         } finally {
             try {
                 connectionDB.getConnection().close();
@@ -66,6 +67,7 @@ public class MySqlPersonDao {
     }
 
     public void update(Person item) {
+        ConnectionDB connectionDB = new ConnectionDB();
         try {
             try (PreparedStatement statement = connectionDB.getConnection().prepareStatement(UPDATE)) {
                 statement(statement, item);
@@ -75,6 +77,7 @@ public class MySqlPersonDao {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
+
             try {
                 connectionDB.getConnection().close();
             } catch (SQLException e) {
@@ -85,6 +88,8 @@ public class MySqlPersonDao {
     }
 
     public BaseEntity findByTelegramId(int id) {
+        ConnectionDB connectionDB = new ConnectionDB();
+
         Person person = null;
         try {
             try (PreparedStatement statement = connectionDB.getConnection().prepareStatement(FIND_BY_TELEGRAM_ID)) {
@@ -96,12 +101,11 @@ public class MySqlPersonDao {
                 }
             }
         } catch (SQLException e) {
-
-        } finally {
+            e.printStackTrace();
             try {
                 connectionDB.getConnection().close();
-            } catch (SQLException e) {
-                e.printStackTrace();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
             }
         }
         return person;

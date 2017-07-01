@@ -21,11 +21,14 @@ public class RegistraionPerson {
             chatId = update.getMessage().getChatId();
             registerStatus = false;
         }else{
+            System.out.println("Update");
+            chatId = update.getMessage().getChatId();
+
         person.setTelegramId(Math.toIntExact(update.getMessage().getChat().getId()));
         person.setFirstName(update.getMessage().getChat().getFirstName());
         person.setLastName(update.getMessage().getChat().getLastName());
         person.setCheckDate(update.getMessage().getDate());
-        chatId = update.getMessage().getChatId();
+
         mySqlPersonDao.insert(person);
             registerStatus = true;
     }

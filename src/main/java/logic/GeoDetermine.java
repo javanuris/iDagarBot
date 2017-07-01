@@ -1,5 +1,8 @@
 package logic;
 
+import dao.mysql.MySqlPersonDao;
+import entity.BaseEntity;
+import entity.Person;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Update;
 
@@ -16,10 +19,16 @@ public class GeoDetermine {
         double personX = update.getMessage().getLocation().getLatitude();
         double personY = update.getMessage().getLocation().getLongitude();
         chatId = update.getMessage().getChatId();
-
+        Person person = new Person();
+        MySqlPersonDao mySqlPersonDao = new MySqlPersonDao();
+        Person telegramId = (Person) mySqlPersonDao.findByTelegramId(Math.toIntExact(update.getMessage().getChat().getId()));
         if (latitude == personX && longitude == personY) {
+            telegramId.setStatus(2);
+            mySqlPersonDao.update(person);
             inPlace = true;
         } else {
+            telegramId.setStatus(1);
+            mySqlPersonDao.update(person);
             inPlace = false;
         }
     }
