@@ -7,8 +7,6 @@ public class Person extends BaseEntity {
     private int telegramId;
     private String firstName;
     private String lastName;
-    private int checkDate;
-    private int status;
 
     public Person() {
     }
@@ -37,19 +35,4 @@ public class Person extends BaseEntity {
         this.lastName = lastName;
     }
 
-    public int getCheckDate() {
-        return checkDate;
-    }
-
-    public void setCheckDate(int checkDate) {
-        this.checkDate = checkDate;
-    }
-
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
 }

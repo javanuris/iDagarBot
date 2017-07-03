@@ -15,7 +15,7 @@ public class ConnectionDB {
 
     private String driver= "com.mysql.jdbc.Driver";
 
-    private String url = "jdbc:mysql://localhost:3306/tele_bot?autoReconnect=true&useSSL=false";
+    private String url = "jdbc:mysql://localhost:3306/telegrambotadmin?autoReconnect=true&useSSL=false";
 
     private Connection connection;
 

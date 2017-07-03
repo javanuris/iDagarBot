@@ -5,19 +5,21 @@ import connection.ConnectionDB;
 import entity.BaseEntity;
 import entity.Person;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
 
 /**
  * Created by User on 01.07.2017.
  */
 public class MySqlPersonDao {
 
-    private static final String FIND_BY_ID = "SELECT * FROM person_info WHERE person_id = ?";
-    private static final String FIND_BY_TELEGRAM_ID = "SELECT * FROM person_info WHERE telegram_id = ?";
-    private static final String INSERT = "INSERT INTO person_info VALUES(person_id,?,?,?,?,?)";
-    private static final String UPDATE = "UPDATE person_info SET telegram_id = ? ,first_name = ?,last_name = ?,check_date = ?, status = ? WHERE person_id = ?";
+    private static final String FIND_BY_ID = "SELECT * FROM students WHERE id = ?";
+    private static final String FIND_BY_TELEGRAM_ID = "SELECT * FROM students WHERE telegram_id = ?";
+    private static final String INSERT = "INSERT INTO students VALUES(id,?,?,?,?,?)";
+    private static final String UPDATE = "UPDATE students SET telegram_id = ? ,first_name = ?,last_name = ? WHERE id = ?";
 
     public BaseEntity insert(Person item) {
         ConnectionDB connectionDB = new ConnectionDB();
@@ -42,7 +44,7 @@ public class MySqlPersonDao {
         return item;
     }
 
-    public BaseEntity findById(int id) {
+    public Person findById(int id) {
         Person person = null;
         ConnectionDB connectionDB = new ConnectionDB();
         try {
@@ -71,7 +73,7 @@ public class MySqlPersonDao {
         try {
             try (PreparedStatement statement = connectionDB.getConnection().prepareStatement(UPDATE)) {
                 statement(statement, item);
-                statement.setInt(6, item.getId());
+                statement.setInt(4, item.getId());
                 statement.executeUpdate();
             }
         } catch (SQLException e) {
@@ -115,8 +117,10 @@ public class MySqlPersonDao {
         statement.setInt(1, item.getTelegramId());
         statement.setString(2, item.getFirstName());
         statement.setString(3, item.getLastName());
-        statement.setInt(4, item.getCheckDate());
-        statement.setInt(5, item.getStatus());
+        statement.setDate(4, new Date(Calendar.getInstance().getTime().getTime()));
+        statement.setDate(5, new Date(Calendar.getInstance().getTime().getTime()));
+
+
         return statement;
     }
 
@@ -126,8 +130,7 @@ public class MySqlPersonDao {
         person.setTelegramId(resultSet.getInt(2));
         person.setFirstName(resultSet.getString(3));
         person.setLastName(resultSet.getString(4));
-        person.setCheckDate(resultSet.getInt(5));
-        person.setStatus(resultSet.getInt(6));
+
         return person;
     }
 }
